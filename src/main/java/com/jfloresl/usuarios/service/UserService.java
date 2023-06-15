@@ -1,6 +1,7 @@
 package com.jfloresl.usuarios.service;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -10,7 +11,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.function.ServerRequest.Headers;
 
+import com.jfloresl.usuarios.entities.Phone;
 import com.jfloresl.usuarios.entities.User;
+import com.jfloresl.usuarios.repository.PhoneRepository;
 import com.jfloresl.usuarios.repository.UserRepository;
 import com.jfloresl.usuarios.response.ResponseHandler;
 import com.jfloresl.usuarios.utils.Constantes;
@@ -21,6 +24,8 @@ public class UserService {
 	@Autowired
 	private UserRepository userRepository;
 	
+	@Autowired
+	private PhoneRepository phoneRepository;
 	
 	/**
 	 * @param user
@@ -63,6 +68,7 @@ public class UserService {
 		user.setCreated(LocalDate.now());
 		user.setIsactive("1");
 		User user1 = userRepository.save(user);
+		
 		//return ResponseHandler.generateResponse(ResponseEntity.ok(user1), HttpStatus.ACCEPTED);
 		return ResponseEntity.ok(user1);
 
@@ -96,6 +102,9 @@ public class UserService {
 		UUID uuid = UUID.fromString(id);
 		Optional<User> user = userRepository.findById(uuid);
 		if(user.isPresent()) {
+			//List<Phone> phones = phoneRepository.findByUser(uuid);
+			//System.out.println(phones);
+			//user.get().setPhones(phones);
 			return ResponseEntity.ok(user);
 		}
 		return ResponseHandler.generateResponse(Constantes.userNotFound, HttpStatus.BAD_REQUEST);

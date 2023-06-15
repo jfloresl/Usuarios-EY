@@ -6,10 +6,12 @@ import java.util.List;
 import java.util.UUID;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -23,6 +25,7 @@ public class User {
 	@Id
 	@GeneratedValue
 	@Type(type="org.hibernate.type.UUIDCharType")
+	@Column(name = "user_id",nullable = false, unique = true)
 	private UUID id;
 	@NonNull
 	private String name;
@@ -35,8 +38,8 @@ public class User {
 	private LocalDate last_login;
 	private String token;
 	private String isactive;
-	@OneToMany(mappedBy = "user",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-	@NonNull
+	@OneToMany(cascade = CascadeType.ALL)
+    //private Set<Phone> phones;
 	private List<Phone> phones= new ArrayList<>();
 
 	/**
@@ -45,19 +48,19 @@ public class User {
 	public User() {
 	}
 
-	
+
 	
 	/**
-	 * @param id
 	 * @param name
 	 * @param email
 	 * @param password
+	 * @param phones
 	 */
-	public User(UUID id, String name, String email, String password) {
-		this.id = id;
+	public User(String name, String email, String password, List<Phone> phones) {
 		this.name = name;
 		this.email = email;
 		this.password = password;
+		this.phones = phones;
 	}
 
 
@@ -71,11 +74,11 @@ public class User {
 	 * @param modified
 	 * @param last_login
 	 * @param token
-	 * @param isactiveString
-	 * @param phone
+	 * @param isactive
+	 * @param phones
 	 */
-	public User(UUID id, String name, String email, String password, LocalDate created, LocalDate modified, LocalDate last_login,
-			String token, String isactiveString, List<Phone> phones) {
+	public User(UUID id, String name, String email, String password, LocalDate created, LocalDate modified,
+			LocalDate last_login, String token, String isactive, List<Phone> phones) {
 		this.id = id;
 		this.name = name;
 		this.email = email;
@@ -84,9 +87,10 @@ public class User {
 		this.modified = modified;
 		this.last_login = last_login;
 		this.token = token;
-		this.isactive = isactiveString;
+		this.isactive = isactive;
 		this.phones = phones;
 	}
+
 
 	/**
 	 * @return the id
