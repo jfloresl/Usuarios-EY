@@ -46,7 +46,6 @@ public class UserController {
 	}
 
 	//borrar
-	
 	@DeleteMapping("/api/users/delete{id}{token}")
     public ResponseEntity<Object> deleteById(@RequestParam String id,@RequestParam String token){
 		return userService.deleteById(id,token);

@@ -1,6 +1,5 @@
 package com.jfloresl.usuarios.service;
 
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -76,8 +75,9 @@ public class UserService {
 	}
 
 	private String tokenGenerator(String email, String password) {
-        String input = email + password;
-        UUID uuid = UUID.nameUUIDFromBytes(input.getBytes(StandardCharsets.UTF_8));
+        //String input = email + password;
+        UUID uuid = UUID.randomUUID();
+        //UUID uuid = UUID.nameUUIDFromBytes(input.getBytes(StandardCharsets.UTF_8));
 		return uuid.toString();
 	}
 
