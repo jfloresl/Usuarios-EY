@@ -10,6 +10,9 @@ import com.jfloresl.usuarios.entities.User;
 public interface UserRepository extends JpaRepository<User,UUID>{
 	List<User> findByEmail(String email);
 	
-	//Optional<User> findByToken(String token);
+	void deleteByIdAndToken(UUID id, String token);
+	
+	
+	
 	
 }

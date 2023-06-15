@@ -48,9 +48,9 @@ public class UserController {
 
 	//borrar
 	
-	@DeleteMapping("/api/users/{id}")
-    public ResponseEntity<Object> deleteById(@PathVariable String id){
-		return userService.deleteById(id);
+	@DeleteMapping("/api/users/delete{id}{token}")
+    public ResponseEntity<Object> deleteById(@RequestParam String id,@RequestParam String token){
+		return userService.deleteById(id,token);
     }
 	
 	//modificar

@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -118,12 +120,24 @@ public class UserService {
 
 	/**
 	 * @param id
+	 * @param token 
 	 * @return
 	 */
-	public ResponseEntity<Object> deleteById(String id) {
+	@Transactional
+	public ResponseEntity<Object> deleteById(String id, String token) {
+		if(UserUtils.isNullOrEmpty(id) || UserUtils.isNullOrEmpty(token)) {
+			return ResponseHandler.generateResponse(Constantes.tokenInvalid, HttpStatus.BAD_REQUEST);
+		}
 		UUID uuid = UUID.fromString(id);
-		userRepository.deleteById(uuid);
-		return ResponseHandler.generateResponse(Constantes.userDeleted, HttpStatus.ACCEPTED);	
+
+		Optional<User> user =userRepository.findById(uuid);
+		if(user.isPresent() && user.get().getToken().equals(token) ) {
+			userRepository.deleteByIdAndToken(uuid,token);
+			return ResponseHandler.generateResponse(Constantes.userDeleted, HttpStatus.ACCEPTED);
+		}
+		
+		return ResponseHandler.generateResponse(Constantes.userNotFound, HttpStatus.BAD_REQUEST);
+
 	}
 
 	/**
