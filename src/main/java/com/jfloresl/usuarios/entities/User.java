@@ -7,7 +7,6 @@ import java.util.UUID;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
@@ -35,8 +34,8 @@ public class User {
 	private LocalDate last_login;
 	private String token;
 	private String isactive;
-	@OneToMany(mappedBy = "user",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
 	@NonNull
+	@OneToMany(cascade = CascadeType.ALL)
 	private List<Phone> phones= new ArrayList<>();
 
 	/**
@@ -60,7 +59,18 @@ public class User {
 		this.password = password;
 	}
 
-
+	/**
+	 * @param name
+	 * @param email
+	 * @param password
+	 * @param phones
+	 */
+	public User(String name, String email, String password, List<Phone> phones) {
+		this.name = name;
+		this.email = email;
+		this.password = password;
+		this.phones = phones;
+	}
 
 	/**
 	 * @param id
