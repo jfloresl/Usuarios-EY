@@ -14,31 +14,30 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jfloresl.usuarios.entities.User;
-import com.jfloresl.usuarios.repository.UserRepository;
 import com.jfloresl.usuarios.response.ResponseHandler;
 import com.jfloresl.usuarios.service.UserService;
 import com.jfloresl.usuarios.utils.Constantes;
 
 @RestController
 public class UserController {
-	@Autowired
-	private UserRepository userRepository;
+	
 	@Autowired
 	private UserService userService;
 
 	//leer
 
-	@GetMapping("/api/users/")
+	@GetMapping("/api/users/all")
     public List<User> findAll(){
-        return userRepository.findAll();
+        return userService.findAll();
     }
 
-	@GetMapping("/api/users/{id}")
-    public ResponseEntity<Object> findOneById(@PathVariable String id){
-		return userService.findById(id);
+	@GetMapping("/api/users{id}{token}")
+    public ResponseEntity<Object> findOneById(@RequestParam String id,@RequestParam String token){
+		return userService.findById(id,token);
     }
 	
 	//crear
@@ -49,9 +48,9 @@ public class UserController {
 
 	//borrar
 	
-	@DeleteMapping("/api/users/{id}")
-    public ResponseEntity<Object> deleteById(@PathVariable String id){
-		return userService.deleteById(id);
+	@DeleteMapping("/api/users/delete{id}{token}")
+    public ResponseEntity<Object> deleteById(@RequestParam String id,@RequestParam String token){
+		return userService.deleteById(id,token);
     }
 	
 	//modificar

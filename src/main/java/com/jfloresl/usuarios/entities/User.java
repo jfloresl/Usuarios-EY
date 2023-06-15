@@ -8,7 +8,6 @@ import java.util.UUID;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -38,8 +37,8 @@ public class User {
 	private LocalDate last_login;
 	private String token;
 	private String isactive;
+	@NonNull
 	@OneToMany(cascade = CascadeType.ALL)
-    //private Set<Phone> phones;
 	private List<Phone> phones= new ArrayList<>();
 
 	/**
@@ -47,22 +46,6 @@ public class User {
 	 */
 	public User() {
 	}
-
-
-	
-	/**
-	 * @param name
-	 * @param email
-	 * @param password
-	 * @param phones
-	 */
-	public User(String name, String email, String password, List<Phone> phones) {
-		this.name = name;
-		this.email = email;
-		this.password = password;
-		this.phones = phones;
-	}
-
 
 
 	/**

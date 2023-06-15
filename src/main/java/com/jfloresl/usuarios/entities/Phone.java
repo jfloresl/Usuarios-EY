@@ -9,8 +9,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.springframework.lang.NonNull;
@@ -29,45 +27,26 @@ public class Phone {
 	private String number;
 	private String citycode;
 	private String contrycode;
-	@ManyToOne
-	private User user;
+	
 	
 	public Phone() {
 	}
 
+	
 	/**
 	 * @param id
 	 * @param number
 	 * @param citycode
 	 * @param contrycode
-	 * @param user
 	 */
 	public Phone(Long id, String number, String citycode, String contrycode) {
+		this.id = id;
 		this.number = number;
 		this.citycode = citycode;
 		this.contrycode = contrycode;
 	}
-	
-	
-	
-	@Override
-	public int hashCode() {
-		return Objects.hash(citycode, contrycode, id, number, user);
-	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Phone other = (Phone) obj;
-		return Objects.equals(citycode, other.citycode) && Objects.equals(contrycode, other.contrycode)
-				&& Objects.equals(id, other.id) && Objects.equals(number, other.number)
-				&& Objects.equals(user, other.user);
-	}
+
 
 	/**
 	 * @param number
@@ -79,6 +58,8 @@ public class Phone {
 		this.citycode = citycode;
 		this.contrycode = contrycode;
 	}
+
+
 
 	/**
 	 * @return the id
@@ -136,19 +117,6 @@ public class Phone {
 		this.contrycode = contrycode;
 	}
 
-	/**
-	 * @return the user
-	 */
-	public User getUser() {
-		return user;
-	}
-
-	/**
-	 * @param user the user to set
-	 */
-	public void setUser(User user) {
-		this.user = user;
-	}
 
 
 	
