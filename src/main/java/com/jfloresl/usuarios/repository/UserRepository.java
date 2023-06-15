@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 import com.jfloresl.usuarios.entities.User;
 @Repository
 public interface UserRepository extends JpaRepository<User,UUID>{
-	List<User> findByEmail(String enail);
-
+	List<User> findByEmail(String email);
+	
 }

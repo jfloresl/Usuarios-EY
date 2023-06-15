@@ -3,6 +3,8 @@ package com.jfloresl.usuarios.response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import com.jfloresl.usuarios.entities.User;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,4 +24,13 @@ public class ResponseHandler {
         map.put("message", message);
         return new ResponseEntity<Object>(map,status);
     }
+
+	public static ResponseEntity<Object> generateResponse(ResponseEntity<User> user, HttpStatus status) {
+		Map<String, Object> map = new HashMap<String, Object>();
+        map.put("status", String.valueOf((status.value())));
+        map.put("message", user);
+        return new ResponseEntity<Object>(map,status);
+	}
+    
+
 }

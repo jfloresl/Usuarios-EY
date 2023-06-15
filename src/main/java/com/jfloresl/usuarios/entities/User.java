@@ -1,13 +1,11 @@
 package com.jfloresl.usuarios.entities;
 
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -15,20 +13,17 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 import org.springframework.lang.NonNull;
-
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "users")
 public class User {
 	
 	@Id
-	@GeneratedValue(generator = "uuid2")
-	@GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
-	@Column(name = "id", columnDefinition = "VARCHAR(255)")
-    private UUID id;
+	@GeneratedValue
+	@Type(type="org.hibernate.type.UUIDCharType")
+	private UUID id;
 	@NonNull
 	private String name;
 	@NonNull
@@ -232,7 +227,7 @@ public class User {
 	public void setPhones(List<Phone> phones) {
 		this.phones = phones;
 	}
-	
+
 	
 	
 }
