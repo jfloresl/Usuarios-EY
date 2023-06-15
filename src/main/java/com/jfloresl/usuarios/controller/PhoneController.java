@@ -26,7 +26,7 @@ public class PhoneController {
 
 	//leer
 
-	@GetMapping("/api/phones/")
+	@GetMapping({"/api/phones/","/api/phones"})
     public List<Phone> findAll(){
         return phoneRepository.findAll();
     }
@@ -37,7 +37,7 @@ public class PhoneController {
     }
 	
 	//crear
-	@PostMapping("/api/phones")
+	@PostMapping({"/api/phones/","/api/phones"})
 	public ResponseEntity<Object> createPhone(@RequestBody Phone phone) {		
 		return phoseService.createdPhone(phone);
 	}

@@ -1,6 +1,8 @@
 package com.jfloresl.usuarios.service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,6 +33,12 @@ public class PhoneService {
 		return ResponseHandler.generateResponse(Constantes.phoneNotFound, HttpStatus.BAD_REQUEST);
 	}
 
+	public List<Phone> findByUser(UUID uuid){
+		List<Phone> phones =phoneRepository.findByUser(uuid);
+		return phones;
+		
+	}
+	
 	/**
 	 * @param phone
 	 * @return

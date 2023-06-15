@@ -1,23 +1,30 @@
 package com.jfloresl.usuarios.entities;
 
+import java.util.Objects;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import org.springframework.lang.NonNull;
 
 /**
  * @author jfloresl
  *
  */
 @Entity
-@Table(name="phone")
+@Table(name="phones")
 public class Phone {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_phone",nullable = false, unique = true)
+	@Column(name = "phone_id",nullable = false, unique = true)
     private Long id;
 	private String number;
 	private String citycode;
@@ -35,11 +42,42 @@ public class Phone {
 	 * @param contrycode
 	 * @param user
 	 */
-	public Phone(Long id, String number, String citycode, String contrycode, User user) {
+	public Phone(Long id, String number, String citycode, String contrycode) {
 		this.number = number;
 		this.citycode = citycode;
 		this.contrycode = contrycode;
-		this.user = user;
+	}
+	
+	
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(citycode, contrycode, id, number, user);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Phone other = (Phone) obj;
+		return Objects.equals(citycode, other.citycode) && Objects.equals(contrycode, other.contrycode)
+				&& Objects.equals(id, other.id) && Objects.equals(number, other.number)
+				&& Objects.equals(user, other.user);
+	}
+
+	/**
+	 * @param number
+	 * @param citycode
+	 * @param contrycode
+	 */
+	public Phone(String number, String citycode, String contrycode) {
+		this.number = number;
+		this.citycode = citycode;
+		this.contrycode = contrycode;
 	}
 
 	/**
