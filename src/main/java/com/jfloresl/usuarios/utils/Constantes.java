@@ -16,6 +16,7 @@ public class Constantes {
 	public static String userNotFound = "Usuario no encontrado";
 	public static String userDeleted = "Usuario eliminado";
 	public static String idInvalid = "Id invalido";
+	public static String tokenInvalid ="Token invalido";
 
 
 }

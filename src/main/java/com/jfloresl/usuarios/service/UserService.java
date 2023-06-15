@@ -1,6 +1,8 @@
 package com.jfloresl.usuarios.service;
 
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -14,13 +16,13 @@ import com.jfloresl.usuarios.entities.User;
 import com.jfloresl.usuarios.repository.UserRepository;
 import com.jfloresl.usuarios.response.ResponseHandler;
 import com.jfloresl.usuarios.utils.Constantes;
+import com.jfloresl.usuarios.utils.UserUtils;
 
 @Service
 public class UserService {
 	
 	@Autowired
 	private UserRepository userRepository;
-	
 	
 	/**
 	 * @param user
@@ -48,6 +50,7 @@ public class UserService {
 	 * @return
 	 */
 	public ResponseEntity<Object> createdUser(User user) {
+		
 		if(!emailFormat(user.getEmail())) {
 			return ResponseHandler.generateResponse(Constantes.emailInvalid, HttpStatus.BAD_REQUEST);
 		}
@@ -62,10 +65,17 @@ public class UserService {
 		user.setModified(LocalDate.now());
 		user.setCreated(LocalDate.now());
 		user.setIsactive("1");
+		user.setToken(tokenGenerator(user.getEmail(),user.getPassword()));
 		User user1 = userRepository.save(user);
 		//return ResponseHandler.generateResponse(ResponseEntity.ok(user1), HttpStatus.ACCEPTED);
 		return ResponseEntity.ok(user1);
 
+	}
+
+	private String tokenGenerator(String email, String password) {
+        String input = email + password;
+        UUID uuid = UUID.nameUUIDFromBytes(input.getBytes(StandardCharsets.UTF_8));
+		return uuid.toString();
 	}
 
 	/**
@@ -90,16 +100,20 @@ public class UserService {
 
 	/**
 	 * @param id
+	 * @param token 
 	 * @return
 	 */
-	public ResponseEntity<Object> findById(String id) {
+	public ResponseEntity<Object> findById(String id, String token) {
+		if(UserUtils.isNullOrEmpty(id) || UserUtils.isNullOrEmpty(token)) {
+			return ResponseHandler.generateResponse(Constantes.tokenInvalid, HttpStatus.BAD_REQUEST);
+		}
 		UUID uuid = UUID.fromString(id);
 		Optional<User> user = userRepository.findById(uuid);
-		if(user.isPresent()) {
-			return ResponseEntity.ok(user);
+		if(user.isPresent() && user.get().getToken().equals(token)) {
+				user.get().setPassword("*********");
+				return ResponseEntity.ok(user);
 		}
 		return ResponseHandler.generateResponse(Constantes.userNotFound, HttpStatus.BAD_REQUEST);
-
 	}
 
 	/**
@@ -134,6 +148,17 @@ public class UserService {
 
         userRepository.save(user1.get());
         return ResponseEntity.ok(user1.get());
+	}
+
+	/**
+	 * @return
+	 */
+	public List<User> findAll() {
+		List<User> lista=userRepository.findAll();
+		for(User u:lista) {
+			u.setPassword("*********");
+		}
+		return lista;
 	}
 
 	
