@@ -14,9 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.function.ServerRequest.Headers;
 
-import com.jfloresl.usuarios.entities.Phone;
 import com.jfloresl.usuarios.entities.User;
-import com.jfloresl.usuarios.repository.PhoneRepository;
 import com.jfloresl.usuarios.repository.UserRepository;
 import com.jfloresl.usuarios.response.ResponseHandler;
 import com.jfloresl.usuarios.utils.Constantes;
