@@ -51,7 +51,7 @@ public class UserService {
 	 * @param user
 	 * @return
 	 */
-	public ResponseEntity<Object> createdUser(User user) {
+	public ResponseEntity<Object> createdUser(User user){
 		
 		if(!emailFormat(user.getEmail())) {
 			return ResponseHandler.generateResponse(Constantes.emailInvalid, HttpStatus.BAD_REQUEST);
@@ -68,9 +68,9 @@ public class UserService {
 		user.setCreated(LocalDate.now());
 		user.setIsactive("1");
 		user.setToken(tokenGenerator(user.getEmail(),user.getPassword()));
+		//user.setPassword(PasswordHasher.hashPassword(user.getPassword()));
 		User user1 = userRepository.save(user);
 		
-		//return ResponseHandler.generateResponse(ResponseEntity.ok(user1), HttpStatus.ACCEPTED);
 		return ResponseEntity.ok(user1);
 
 	}
@@ -147,22 +147,24 @@ public class UserService {
 	 */
 	public ResponseEntity<Object> updateUser(User user) {
 
-        if (null==user.getId()) {
+        if (null==user.getId() || null==user.getToken()) {
     		return ResponseHandler.generateResponse(Constantes.idInvalid, HttpStatus.BAD_REQUEST);
         }
         
         Optional<User> user1 = userRepository.findById(user.getId());
-        if (!user1.isPresent()) {
-    		return ResponseHandler.generateResponse(Constantes.userNotFound, HttpStatus.BAD_REQUEST);
+        if (user1.isPresent() && user.getToken().equals(user1.get().getToken()) ) {
+        	user1.get().setName(user.getName());
+            user1.get().setEmail(user.getEmail());
+            user1.get().setModified(LocalDate.now());
+
+            userRepository.save(user1.get());
+			user1.get().setPassword("*********");
+
+            return ResponseEntity.ok(user1.get());
         }
+    	return ResponseHandler.generateResponse(Constantes.userNotFound, HttpStatus.BAD_REQUEST);
 
-        user1.get().setName(user.getName());
-        user1.get().setEmail(user.getEmail());
-        user1.get().setName(user.getName());
-        user1.get().setModified(LocalDate.now());
-
-        userRepository.save(user1.get());
-        return ResponseEntity.ok(user1.get());
+        
 	}
 
 	/**
