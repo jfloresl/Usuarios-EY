@@ -47,25 +47,14 @@ GET http://localhost:8080/api/users/all
 ```json
 [
     {
-        "id": "6dd6cbd4-b591-4bcc-b66d-0a54e2b59206",
+        "id": "2b109181-de42-4b1b-91fa-2fdaf4bdaf90",
         "name": "Juan Rodriguez",
         "email": "juan@dominio.cl",
         "password": "*********",
-        "created": [
-            2023,
-            6,
-            16
-        ],
-        "modified": [
-            2023,
-            6,
-            16
-        ],
-        "last_login":
-            2023,
-            6,
-            16,
-        "token": "a5e4b159-303a-451c-befd-b387b4885a8d",
+        "created": "2023-06-16",
+        "modified": "2023-06-16",
+        "last_login": "2023-06-16",
+        "token": "8d6f047d-fa74-46f0-9aee-48e7fd6070e3",
         "isactive": "1",
         "phones": [
             {
@@ -84,14 +73,14 @@ GET http://localhost:8080/api/users?id={id}&token={token}
 #### RESPONSE
 ```json
 {
-    "id": "240246ab-1cfa-4f95-a024-97bb98bc8b7a",
+    "id": "2b109181-de42-4b1b-91fa-2fdaf4bdaf90",
     "name": "Juan Rodriguez",
     "email": "juan@dominio.cl",
-    "password": "hunterA2",
-    "created": "2023-06-15",
-    "modified": "2023-06-15",
-    "last_login": "2023-06-15",
-    "token": "e0657695-7292-4aee-a7bd-7725a18492f0",
+    "password": "*********",
+    "created": "2023-06-16",
+    "modified": "2023-06-16",
+    "last_login": "2023-06-16",
+    "token": "8d6f047d-fa74-46f0-9aee-48e7fd6070e3",
     "isactive": "1",
     "phones": [
         {
