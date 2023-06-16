@@ -1,4 +1,4 @@
-package com.jfloresl.usuarios.response;
+package com.jfloresl.usuarios.handler;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -11,8 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.function.ServerRequest.Headers;
 
+import com.fasterxml.jackson.core.JacksonException;
 import com.jfloresl.usuarios.entities.User;
 import com.jfloresl.usuarios.handler.ResponseHandler;
 import com.jfloresl.usuarios.repository.UserRepository;

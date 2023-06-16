@@ -1,5 +1,4 @@
 package com.jfloresl.usuarios.controller;
-import java.io.IOException;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
@@ -48,7 +47,7 @@ public class UserController {
 
 	//borrar
 	@DeleteMapping("/api/users/delete{id}{token}")
-    public ResponseEntity<Object> deleteById(@RequestParam String id,@RequestParam String token){
+    public ResponseEntity<Object> deleteById(@RequestParam (required = true) String id,@RequestParam String token){
 		return userService.deleteById(id,token);
     }
 	
@@ -63,10 +62,4 @@ public class UserController {
 	public ResponseEntity<Object> notMappingUrl(HttpServletResponse response) {
 		return ResponseHandler.generateResponse(Constantes.serviceNotFound, HttpStatus.NOT_FOUND);
 	}
-
-	@ExceptionHandler(com.fasterxml.jackson.core.JsonParseException.class)
-    public ResponseEntity<Object> handleException(com.fasterxml.jackson.core.JsonParseException Ex) {
-		return ResponseHandler.generateResponse(Ex.getOriginalMessage(), HttpStatus.BAD_REQUEST);
-    }
-	
 }

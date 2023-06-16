@@ -17,6 +17,9 @@ public class Constantes {
 	public static String userDeleted = "Usuario eliminado";
 	public static String idInvalid = "Id invalido";
 	public static String tokenInvalid ="Token invalido";
+	
+	public static String jsonError="Error en request json";
+	public static String missingError="Error Falta datos en request";
 
 
 }
