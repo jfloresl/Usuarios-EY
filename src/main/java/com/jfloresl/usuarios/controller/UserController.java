@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jfloresl.usuarios.entities.User;
-import com.jfloresl.usuarios.response.ResponseHandler;
+import com.jfloresl.usuarios.handler.ResponseHandler;
 import com.jfloresl.usuarios.service.UserService;
 import com.jfloresl.usuarios.utils.Constantes;
 
@@ -60,8 +61,13 @@ public class UserController {
 	
 	//default
 	@RequestMapping(value = {"*/*","*"}, method = {RequestMethod.POST,RequestMethod.GET,RequestMethod.PUT,RequestMethod.DELETE})
-	public ResponseEntity<Object> test(HttpServletResponse response) throws IOException {
+	public ResponseEntity<Object> notMappingUrl(HttpServletResponse response) {
 		return ResponseHandler.generateResponse(Constantes.serviceNotFound, HttpStatus.NOT_FOUND);
 	}
 
+	@ExceptionHandler(com.fasterxml.jackson.core.JsonParseException.class)
+    public ResponseEntity<Object> handleException(com.fasterxml.jackson.core.JsonParseException Ex) {
+		return ResponseHandler.generateResponse(Ex.getOriginalMessage(), HttpStatus.BAD_REQUEST);
+    }
+	
 }
