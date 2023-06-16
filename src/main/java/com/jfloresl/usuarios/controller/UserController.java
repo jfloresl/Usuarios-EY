@@ -62,7 +62,4 @@ public class UserController {
 	public ResponseEntity<Object> notMappingUrl(HttpServletResponse response) {
 		return ResponseHandler.generateResponse(Constantes.serviceNotFound, HttpStatus.NOT_FOUND);
 	}
-
-
-	
 }
