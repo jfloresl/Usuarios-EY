@@ -11,15 +11,19 @@ public class Constantes {
 	
 	public static String passwordFormat = "^(?=.*[a-z]){3}(?=.*[A-Z])(?=.*\\d){2}[a-zA-Z\\d]{6,}$";
 	public static String passwordInvalid = "Password invalido";
-	
-	public static String serviceNotFound = "Servicio no encontrado";
+
 	public static String userNotFound = "Usuario no encontrado";
 	public static String userDeleted = "Usuario eliminado";
+	public static String userEmpty="No hay usuarios para mostrar";
+
+	public static String serviceNotFound = "Servicio no encontrado";
+
 	public static String idInvalid = "Id invalido";
 	public static String tokenInvalid ="Token invalido";
 	
 	public static String jsonError="Error en request json";
 	public static String missingError="Error Falta datos en request";
+	public static String userInvalid="Nombre invalido";
 
 
 }
