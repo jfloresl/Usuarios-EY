@@ -170,8 +170,7 @@ public class UserService {
 
             userRepository.save(user1.get());
 			user1.get().setPassword("*********");
-
-            return ResponseEntity.ok(user1.get());
+	    	return ResponseHandler.generateResponse(user1.get(), HttpStatus.OK);
         }
     	return ResponseHandler.generateResponse(Constantes.userNotFound, HttpStatus.BAD_REQUEST);
 

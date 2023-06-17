@@ -49,19 +49,19 @@ public class UserController {
     }
 		
 	//crear
-	@PostMapping({"/api/users","/api/users/"})
+	@PostMapping({"/api/users/create","/api/users/create/"})
 	public ResponseEntity<Object> createUser(@RequestBody User user) {		
 		return userService.createdUser(user);
 	}
 
 	//borrar
-	@DeleteMapping("/api/users/delete")
+	@DeleteMapping({"/api/users/delete","/api/users/delete/"})
     public ResponseEntity<Object> deleteById(@RequestBody Map<String, String> request){
 		return userService.deleteById(request);
     }
 
 	//modificar
-	@PutMapping("/api/users/")
+	@PutMapping({"/api/users/edit","/api/users/edit/"})
 	public ResponseEntity<Object> updateUser(@RequestBody User user) {		
 		return userService.updateUser(user);
 	}
