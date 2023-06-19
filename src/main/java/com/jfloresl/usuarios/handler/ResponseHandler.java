@@ -9,6 +9,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Clase para entregar respuestas json personalizadas
+ *
+ */
 public class ResponseHandler {
 	
     public static ResponseEntity<Object> generateResponse(String message, HttpStatus status, Object responseObj) {

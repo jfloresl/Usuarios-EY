@@ -1,5 +1,9 @@
 package com.jfloresl.usuarios.utils;
 
+/**
+ * Clase de constantes
+ *
+ */
 public class Constantes {
 	public static String emailExistente= "Email ya fue registrado";
 	public static String emailFormat = "^[A-Za-z0-9+_.-]+@dominio.cl$";

@@ -8,6 +8,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import com.jfloresl.usuarios.handler.ResponseHandler;
 import com.jfloresl.usuarios.utils.Constantes;
 
+/**
+ * Clase general para manejar excepciones
+ *
+ */
 @ControllerAdvice
 public class GeneralException {
 	

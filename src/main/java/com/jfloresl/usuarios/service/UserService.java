@@ -26,20 +26,9 @@ public class UserService {
 	@Autowired
 	private UserRepository userRepository;
 	
-	/**
-	 * @param user
-	 * @param headers
-	 * @return
-	 */
-	public Boolean userValido(User user,Headers headers) {
-		if(null!=user || null!=headers) {
-			return true;
-		}
-		
-		return false;
-	}
 	
 	/**
+	 * Funcion para saber si el email existe ya en base de datos
 	 * @param email
 	 * @return
 	 */
@@ -48,6 +37,8 @@ public class UserService {
 	}
 
 	/**
+	 * Funcion que verifica los datos del user y posteriormente crearlo
+	 * en base de datos
 	 * @param user
 	 * @return
 	 */
@@ -67,6 +58,11 @@ public class UserService {
 
 	}
 
+	/**
+	 * Funcion para validar los parametros de user para la creacion de un nuevo usuario
+	 * @param user
+	 * @return
+	 */
 	private String parametersUser(User user) {
 		if(UserUtils.isNullOrEmpty(user.getName())){
 			return Constantes.userInvalid;
@@ -80,7 +76,6 @@ public class UserService {
 		if(!existEmail(user.getEmail())) {
 			return Constantes.emailExistente;
 		}
-		System.out.println(user.getPassword());
 		if(!checkPasswordFormat(user.getPassword())) {
 			System.out.println("password invalida");
 			return Constantes.passwordInvalid;
@@ -88,6 +83,12 @@ public class UserService {
 		return "0";
 	}
 
+	/**
+	 * Funcion para generar un token UUID random
+	 * @param email
+	 * @param password
+	 * @return
+	 */
 	private String tokenGenerator(String email, String password) {
         //String input = email + password;
         UUID uuid = UUID.randomUUID();
@@ -96,20 +97,18 @@ public class UserService {
 	}
 
 	/**
+	 * Funcion para validar formato de password segun un regex
 	 * @param password
 	 * @return
 	 */
 	private boolean checkPasswordFormat(String password) {
 		String regex = Constantes.passwordFormat;
-		System.out.println(regex);
-		System.out.println(password);
 		boolean isEmailValid = password.matches(regex);
-		System.out.println(isEmailValid);
-
 		return isEmailValid;
 	}
 
 	/**
+	 * Funcion para validar el formato de un email segun un regex
 	 * @param email
 	 * @return
 	 */
@@ -120,6 +119,7 @@ public class UserService {
 	}
 
 	/**
+	 * Funcion que entrega un usuario en segun un id y token
 	 * @param id
 	 * @param token 
 	 * @return
@@ -138,6 +138,7 @@ public class UserService {
 	}
 
 	/**
+	 * Funcion para borrar un usurio en base de datos segun su id y token
 	 * @param id
 	 * @param token 
 	 * @return
@@ -160,6 +161,8 @@ public class UserService {
 	}
 
 	/**
+	 * Funcion para actualizar datos de un usuario segun su id y token
+	 * Solo actualizable los datos de nombre y email
 	 * @param user
 	 * @return
 	 */
@@ -183,6 +186,11 @@ public class UserService {
         
 	}
 
+	/**
+	 * Funcion para validar parametros de user para actualizar usuario en base de datos
+	 * @param user
+	 * @return
+	 */
 	private String parametersUpdateUser(User user) {
 		
 		if (null==user.getId() || null==user.getToken()) {
@@ -200,9 +208,12 @@ public class UserService {
 		return "0";
 	}
 
-	/**
+	
+	/*
+	 * Funcion que entrega todos los usuarios de la base de datos
 	 * @return
 	 */
+	/*
 	public ResponseEntity<Object> findAll() {
 		List<User> lista=userRepository.findAll();
 		if(!lista.isEmpty()) {
@@ -214,7 +225,13 @@ public class UserService {
     	return ResponseHandler.generateResponse(Constantes.userEmpty, HttpStatus.BAD_REQUEST);
 		
 	}
+	*/
 
+	/**
+	 * Funcion que entrega todos los usuarios de la base de datos
+	 * @param id
+	 * @return
+	 */
 	public ResponseEntity<Object> findAll(Map<String, String> id) {
 		if(UserUtils.isNullOrEmpty(id.get("id")) || !id.get("id").equals("all")) {
 	    	return ResponseHandler.generateResponse(Constantes.idInvalid, HttpStatus.BAD_REQUEST);

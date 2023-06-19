@@ -33,6 +33,11 @@ public class UserController {
         return userService.findAll();
     }
 	*/
+	/**
+	 * Funcion para obtener todos los usuarios existentes
+	 * @param request
+	 * @return
+	 */
 	@PostMapping({"/api/users/all","/api/users/all/"})
     public ResponseEntity<Object> findAll(@RequestBody Map<String, String> request){
         return userService.findAll(request);
@@ -43,30 +48,56 @@ public class UserController {
 		return userService.findById(id,token);
     }
 	*/
+	/**
+	 * Funcion para obtener a un usurio en base a su id y su token
+	 * @param request
+	 * @return
+	 */
 	@PostMapping({"/api/users/find","/api/users/find/"})
     public ResponseEntity<Object> findOneByIdPost(@RequestBody Map<String, String> request){
 		return userService.findById(request);
     }
 		
 	//crear
+	/**
+	 * Funcion para crear un usuario
+	 * @param user
+	 * @return
+	 */
 	@PostMapping({"/api/users/create","/api/users/create/"})
 	public ResponseEntity<Object> createUser(@RequestBody User user) {		
 		return userService.createdUser(user);
 	}
 
 	//borrar
+	/**
+	 * Funcion para crear un usuario
+	 * @param request
+	 * @return
+	 */
 	@DeleteMapping({"/api/users/delete","/api/users/delete/"})
     public ResponseEntity<Object> deleteById(@RequestBody Map<String, String> request){
 		return userService.deleteById(request);
     }
 
 	//modificar
+	/**
+	 * Funcion para modificar los datos de un usuario (nombre y email)
+	 * @param user
+	 * @return
+	 */
 	@PutMapping({"/api/users/edit","/api/users/edit/"})
 	public ResponseEntity<Object> updateUser(@RequestBody User user) {		
 		return userService.updateUser(user);
 	}
 	
 	//default
+	/**
+	 * Funcion que captura todas las otras posibles urls para entregar el error
+	 * de que no existen
+	 * @param response
+	 * @return
+	 */
 	@RequestMapping(value = {"*/*","*"}, method = {RequestMethod.POST,RequestMethod.GET,RequestMethod.PUT,RequestMethod.DELETE})
 	public ResponseEntity<Object> notMappingUrl(HttpServletResponse response) {
 		return ResponseHandler.generateResponse(Constantes.serviceNotFound, HttpStatus.NOT_FOUND);
