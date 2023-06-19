@@ -1,19 +1,18 @@
 package com.jfloresl.usuarios.controller;
-import java.util.List;
+
+import java.util.Map;
+
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jfloresl.usuarios.entities.User;
@@ -28,31 +27,41 @@ public class UserController {
 	private UserService userService;
 
 	//leer
-
-	@GetMapping("/api/users/all")
-    public List<User> findAll(){
+    /*
+	@GetMapping({"/api/users/all","/api/users/all/"})
+    public ResponseEntity<Object>  findAll(){
         return userService.findAll();
     }
-
-	@GetMapping("/api/users{id}{token}")
+	*/
+	@PostMapping({"/api/users/all","/api/users/all/"})
+    public ResponseEntity<Object> findAll(@RequestBody Map<String, String> request){
+        return userService.findAll(request);
+    }
+	/*
+	@GetMapping("/api/users/find{id}{token}")
     public ResponseEntity<Object> findOneById(@RequestParam String id,@RequestParam String token){
 		return userService.findById(id,token);
     }
-	
+	*/
+	@PostMapping({"/api/users/find","/api/users/find/"})
+    public ResponseEntity<Object> findOneByIdPost(@RequestBody Map<String, String> request){
+		return userService.findById(request);
+    }
+		
 	//crear
-	@PostMapping("/api/users")
+	@PostMapping({"/api/users/create","/api/users/create/"})
 	public ResponseEntity<Object> createUser(@RequestBody User user) {		
 		return userService.createdUser(user);
 	}
 
 	//borrar
-	@DeleteMapping("/api/users/delete{id}{token}")
-    public ResponseEntity<Object> deleteById(@RequestParam (required = true) String id,@RequestParam String token){
-		return userService.deleteById(id,token);
+	@DeleteMapping({"/api/users/delete","/api/users/delete/"})
+    public ResponseEntity<Object> deleteById(@RequestBody Map<String, String> request){
+		return userService.deleteById(request);
     }
-	
+
 	//modificar
-	@PutMapping("/api/users/")
+	@PutMapping({"/api/users/edit","/api/users/edit/"})
 	public ResponseEntity<Object> updateUser(@RequestBody User user) {		
 		return userService.updateUser(user);
 	}
@@ -62,4 +71,5 @@ public class UserController {
 	public ResponseEntity<Object> notMappingUrl(HttpServletResponse response) {
 		return ResponseHandler.generateResponse(Constantes.serviceNotFound, HttpStatus.NOT_FOUND);
 	}
+	
 }

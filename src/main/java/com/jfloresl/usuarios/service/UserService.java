@@ -2,6 +2,7 @@ package com.jfloresl.usuarios.service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -11,10 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.function.ServerRequest.Headers;
 
-import com.fasterxml.jackson.core.JacksonException;
 import com.jfloresl.usuarios.entities.User;
 import com.jfloresl.usuarios.handler.ResponseHandler;
 import com.jfloresl.usuarios.repository.UserRepository;
@@ -53,16 +52,9 @@ public class UserService {
 	 * @return
 	 */
 	public ResponseEntity<Object> createdUser(User user){
-		
-		if(!emailFormat(user.getEmail())) {
-			return ResponseHandler.generateResponse(Constantes.emailInvalid, HttpStatus.BAD_REQUEST);
-		}
-		if(!existEmail(user.getEmail())) {
-			return ResponseHandler.generateResponse(Constantes.emailExistente, HttpStatus.BAD_REQUEST);
-		}
-		if(!checkPasswordFormat(user.getPassword())) {
-			return ResponseHandler.generateResponse(Constantes.passwordInvalid, HttpStatus.BAD_REQUEST);
-
+		String validUser=parametersUser(user);
+		if (!validUser.equals("0")) {
+			return ResponseHandler.generateResponse(validUser, HttpStatus.BAD_REQUEST);
 		}
 		user.setLast_login(LocalDate.now());
 		user.setModified(LocalDate.now());
@@ -71,9 +63,29 @@ public class UserService {
 		user.setToken(tokenGenerator(user.getEmail(),user.getPassword()));
 		//user.setPassword(PasswordHasher.hashPassword(user.getPassword()));
 		User user1 = userRepository.save(user);
-		
-		return ResponseEntity.ok(user1);
+    	return ResponseHandler.generateResponse(user1, HttpStatus.OK);
 
+	}
+
+	private String parametersUser(User user) {
+		if(UserUtils.isNullOrEmpty(user.getName())){
+			return Constantes.userInvalid;
+		}
+		if(UserUtils.isNullOrEmpty(user.getPhones())) {
+			return Constantes.phoneInvalid;
+		}
+		if(!emailFormat(user.getEmail())) {
+			return Constantes.emailInvalid;
+		}
+		if(!existEmail(user.getEmail())) {
+			return Constantes.emailExistente;
+		}
+		System.out.println(user.getPassword());
+		if(!checkPasswordFormat(user.getPassword())) {
+			System.out.println("password invalida");
+			return Constantes.passwordInvalid;
+		}
+		return "0";
 	}
 
 	private String tokenGenerator(String email, String password) {
@@ -89,7 +101,11 @@ public class UserService {
 	 */
 	private boolean checkPasswordFormat(String password) {
 		String regex = Constantes.passwordFormat;
+		System.out.println(regex);
+		System.out.println(password);
 		boolean isEmailValid = password.matches(regex);
+		System.out.println(isEmailValid);
+
 		return isEmailValid;
 	}
 
@@ -108,15 +124,15 @@ public class UserService {
 	 * @param token 
 	 * @return
 	 */
-	public ResponseEntity<Object> findById(String id, String token) {
-		if(UserUtils.isNullOrEmpty(id) || UserUtils.isNullOrEmpty(token)) {
+	public ResponseEntity<Object> findById(Map<String, String> request) {
+		if(UserUtils.isNullOrEmpty(request.get("id")) || UserUtils.isNullOrEmpty(request.get("token"))) {
 			return ResponseHandler.generateResponse(Constantes.tokenInvalid, HttpStatus.BAD_REQUEST);
 		}
-		UUID uuid = UUID.fromString(id);
+		UUID uuid = UUID.fromString(request.get("id"));
 		Optional<User> user = userRepository.findById(uuid);
-		if(user.isPresent() && user.get().getToken().equals(token)) {
+		if(user.isPresent() && user.get().getToken().equals(request.get("token"))) {
 				user.get().setPassword("*********");
-				return ResponseEntity.ok(user);
+		    	return ResponseHandler.generateResponse(user.get(), HttpStatus.OK);
 		}
 		return ResponseHandler.generateResponse(Constantes.userNotFound, HttpStatus.BAD_REQUEST);
 	}
@@ -127,19 +143,19 @@ public class UserService {
 	 * @return
 	 */
 	@Transactional
-	public ResponseEntity<Object> deleteById(String id, String token) {
-		if(UserUtils.isNullOrEmpty(id) || UserUtils.isNullOrEmpty(token)) {
+	public ResponseEntity<Object> deleteById(Map<String, String> request) {
+		if(UserUtils.isNullOrEmpty(request.get("id")) || UserUtils.isNullOrEmpty(request.get("token"))) {
 			return ResponseHandler.generateResponse(Constantes.tokenInvalid, HttpStatus.BAD_REQUEST);
 		}
-		UUID uuid = UUID.fromString(id);
+		UUID uuid = UUID.fromString(request.get("id"));
 
 		Optional<User> user =userRepository.findById(uuid);
-		if(user.isPresent() && user.get().getToken().equals(token) ) {
-			userRepository.deleteByIdAndToken(uuid,token);
-			return ResponseHandler.generateResponse(Constantes.userDeleted, HttpStatus.ACCEPTED);
+		if(user.isPresent() && user.get().getToken().equals(request.get("token")) ) {
+			userRepository.deleteByIdAndToken(uuid,request.get("token"));
+			return ResponseHandler.generateResponse(Constantes.userDeleted, HttpStatus.OK);
 		}
 		
-		return ResponseHandler.generateResponse(Constantes.userNotFound, HttpStatus.BAD_REQUEST);
+		return ResponseHandler.generateResponse(Constantes.userNotFound, HttpStatus.OK);
 
 	}
 
@@ -148,36 +164,71 @@ public class UserService {
 	 * @return
 	 */
 	public ResponseEntity<Object> updateUser(User user) {
-
-        if (null==user.getId() || null==user.getToken()) {
-    		return ResponseHandler.generateResponse(Constantes.idInvalid, HttpStatus.BAD_REQUEST);
-        }
-        
+		String validUser=parametersUpdateUser(user);
+		if (!validUser.equals("0")) {
+			return ResponseHandler.generateResponse(validUser, HttpStatus.BAD_REQUEST);
+		}		
         Optional<User> user1 = userRepository.findById(user.getId());
         if (user1.isPresent() && user.getToken().equals(user1.get().getToken()) ) {
-        	user1.get().setName(user.getName());
-            user1.get().setEmail(user.getEmail());
+        	user1.get().setName(UserUtils.ifFirstExistReturnFirst(user.getName(),user1.get().getName()));
+            user1.get().setEmail(UserUtils.ifFirstExistReturnFirst(user.getEmail(),user1.get().getEmail()));
             user1.get().setModified(LocalDate.now());
 
             userRepository.save(user1.get());
 			user1.get().setPassword("*********");
-
-            return ResponseEntity.ok(user1.get());
+	    	return ResponseHandler.generateResponse(user1.get(), HttpStatus.OK);
         }
     	return ResponseHandler.generateResponse(Constantes.userNotFound, HttpStatus.BAD_REQUEST);
 
         
 	}
 
+	private String parametersUpdateUser(User user) {
+		
+		if (null==user.getId() || null==user.getToken()) {
+    		return Constantes.idInvalid;
+        }
+		if(!UserUtils.isNullOrEmpty(user.getEmail())) {
+			 if(!emailFormat(user.getEmail())) {
+					return Constantes.emailInvalid;
+				}
+				if(!existEmail(user.getEmail())) {
+					return Constantes.emailExistente;
+				}
+		}
+       
+		return "0";
+	}
+
 	/**
 	 * @return
 	 */
-	public List<User> findAll() {
+	public ResponseEntity<Object> findAll() {
 		List<User> lista=userRepository.findAll();
+		if(!lista.isEmpty()) {
+			for(User u:lista) {
+				u.setPassword("*********");
+			}
+	    	return ResponseHandler.generateResponse(lista, HttpStatus.OK);
+		}
+    	return ResponseHandler.generateResponse(Constantes.userEmpty, HttpStatus.BAD_REQUEST);
+		
+	}
+
+	public ResponseEntity<Object> findAll(Map<String, String> id) {
+		if(UserUtils.isNullOrEmpty(id.get("id")) || !id.get("id").equals("all")) {
+	    	return ResponseHandler.generateResponse(Constantes.idInvalid, HttpStatus.BAD_REQUEST);
+		}
+		
+		List<User> lista=userRepository.findAll();
+		if(lista.isEmpty()) {
+	    	return ResponseHandler.generateResponse(Constantes.userEmpty, HttpStatus.ACCEPTED);
+		}
+		
 		for(User u:lista) {
 			u.setPassword("*********");
 		}
-		return lista;
+    	return ResponseHandler.generateResponse(lista, HttpStatus.OK);
 	}
 
 	

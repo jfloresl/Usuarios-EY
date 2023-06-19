@@ -7,7 +7,7 @@ Request y response solo en json
 
 Emails habilitados solo del dominio "@dominio.cl"
 
-Password minimo debe tener una mayuscula, tres letras minúsculas y dos numeros
+Password minimo debe tener una mayuscula, dos letras minusculas y dos numeros
 
 
 ### Crear usuarios

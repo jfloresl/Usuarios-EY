@@ -7,6 +7,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.springframework.lang.NonNull;
+
 /**
  * @author jfloresl
  *
@@ -18,8 +20,11 @@ public class Phone {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "phone_id",nullable = false, unique = true)
     private Long id;
+	@NonNull
 	private String number;
+	@NonNull
 	private String citycode;
+	@NonNull
 	private String contrycode;
 	
 	

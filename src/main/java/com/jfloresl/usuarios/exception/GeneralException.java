@@ -26,5 +26,14 @@ public class GeneralException {
 		return ResponseHandler.generateResponse(Constantes.serviceNotFound, HttpStatus.BAD_REQUEST);
     }
 	
+	@ExceptionHandler(org.springframework.http.converter.HttpMessageNotReadableException.class)
+    public ResponseEntity<Object> httpMessageException() {
+		return ResponseHandler.generateResponse(Constantes.jsonError, HttpStatus.BAD_REQUEST);
+    }
+	
+	@ExceptionHandler(NullPointerException.class)
+    public ResponseEntity<Object> nullPointerException() {
+		return ResponseHandler.generateResponse(Constantes.jsonError, HttpStatus.BAD_REQUEST);
+    }
 	
 }
