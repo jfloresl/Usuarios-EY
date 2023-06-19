@@ -68,7 +68,7 @@ POST http://localhost:8080/api/users/all
 ```json
 {"id":"all"}
 ```
-#### RESPONSE
+#### Response
 ```json
 {
     "message": [
@@ -110,7 +110,7 @@ POST http://localhost:8080/api/users/find/
     "token":"1c318b08-dd43-4d9a-883a-06b3f6e89c07"
 }
 ```
-#### RESPONSE
+#### Response
 ```json
 {
     "message": {
@@ -185,7 +185,7 @@ PUT http://localhost:8080/api/users/edit
 
 
 ### Eliminar usuarios
-DELETE localhost:8080/api/users/delete
+DELETE http://localhost:8080/api/users/delete
 
 <details>
   <summary>request/response</summary>
