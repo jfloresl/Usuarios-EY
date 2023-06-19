@@ -1,8 +1,3 @@
-<details>
-  <summary>request/response</summary>
-
-</details>
-
 # Usuarios-EY
 Springboot API CRUD Usuarios
 ## Api
