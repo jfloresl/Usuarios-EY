@@ -164,8 +164,8 @@ public class UserService {
 		}		
         Optional<User> user1 = userRepository.findById(user.getId());
         if (user1.isPresent() && user.getToken().equals(user1.get().getToken()) ) {
-        	user1.get().setName(user.getName());
-            user1.get().setEmail(user.getEmail());
+        	user1.get().setName(UserUtils.ifFirstExistReturnFirst(user.getName(),user1.get().getName()));
+            user1.get().setEmail(UserUtils.ifFirstExistReturnFirst(user.getEmail(),user1.get().getEmail()));
             user1.get().setModified(LocalDate.now());
 
             userRepository.save(user1.get());
@@ -182,15 +182,15 @@ public class UserService {
 		if (null==user.getId() || null==user.getToken()) {
     		return Constantes.idInvalid;
         }
-        if(!emailFormat(user.getEmail())) {
-			return Constantes.emailInvalid;
+		if(!UserUtils.isNullOrEmpty(user.getEmail())) {
+			 if(!emailFormat(user.getEmail())) {
+					return Constantes.emailInvalid;
+				}
+				if(!existEmail(user.getEmail())) {
+					return Constantes.emailExistente;
+				}
 		}
-		if(!existEmail(user.getEmail())) {
-			return Constantes.emailExistente;
-		}
-		if(!emailFormat(user.getEmail())) {
-			return Constantes.emailInvalid;
-		}
+       
 		return "0";
 	}
 

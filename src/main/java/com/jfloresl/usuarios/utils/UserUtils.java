@@ -15,4 +15,11 @@ public class UserUtils {
 	public static boolean isNullOrEmpty(List<Phone> phones) {
 		return phones == null || phones.size()==0;
 	}
+
+	public static String ifFirstExistReturnFirst(String name, String name2) {
+		if(!isNullOrEmpty(name)) {
+			return name;
+		}
+		return name2;
+	}
 }

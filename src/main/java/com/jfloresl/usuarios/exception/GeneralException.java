@@ -30,4 +30,10 @@ public class GeneralException {
     public ResponseEntity<Object> httpMessageException() {
 		return ResponseHandler.generateResponse(Constantes.jsonError, HttpStatus.BAD_REQUEST);
     }
+	
+	@ExceptionHandler(NullPointerException.class)
+    public ResponseEntity<Object> nullPointerException() {
+		return ResponseHandler.generateResponse(Constantes.jsonError, HttpStatus.BAD_REQUEST);
+    }
+	
 }
