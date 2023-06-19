@@ -1,15 +1,26 @@
 # Usuarios-EY
 Springboot API CRUD Usuarios
 ## Api
+Creacion, lectura, edicion y borrado de usuarios.
+
+Request y response solo en json
+
+Emails habilitados solo del dominio "@dominio.cl"
+
+Password minimo debe tener una mayuscula, tres letras minúsculas y dos numeros
+
 
 ### Crear usuarios
-POST http://localhost:8080/api/users
+POST http://localhost:8080/api/users/create
+<details>
+  <summary>request/response</summary>
+
 #### Request
 ```json
 { 
   "name": "Juan Rodriguez",
   "email": "juan@dominio.cl",
-  "password": "hunterA2",
+  "password": "hunterA22",
   "phones": [
     {
       "number": "1234567",
@@ -22,39 +33,15 @@ POST http://localhost:8080/api/users
 #### Response
 ```json
 {
-    "id": "240246ab-1cfa-4f95-a024-97bb98bc8b7a",
-    "name": "Juan Rodriguez",
-    "email": "juan@dominio.cl",
-    "password": "hunterA2",
-    "created": "2023-06-15",
-    "modified": "2023-06-15",
-    "last_login": "2023-06-15",
-    "token": "e0657695-7292-4aee-a7bd-7725a18492f0",
-    "isactive": "1",
-    "phones": [
-        {
-            "id": 1,
-            "number": "1234567",
-            "citycode": "1",
-            "contrycode": "57"
-        }
-    ]
-}
-```
-### Ver todos los usuarios
-GET http://localhost:8080/api/users/all
-#### Response
-```json
-[
-    {
-        "id": "2b109181-de42-4b1b-91fa-2fdaf4bdaf90",
+    "message": {
+        "id": "7495a248-3841-4f8d-9fd5-b96bb8ac22ce",
         "name": "Juan Rodriguez",
         "email": "juan@dominio.cl",
-        "password": "*********",
-        "created": "2023-06-16",
-        "modified": "2023-06-16",
-        "last_login": "2023-06-16",
-        "token": "8d6f047d-fa74-46f0-9aee-48e7fd6070e3",
+        "password": "hunterA22",
+        "created": "2023-06-18",
+        "modified": "2023-06-18",
+        "last_login": "2023-06-18",
+        "token": "1c318b08-dd43-4d9a-883a-06b3f6e89c07",
         "isactive": "1",
         "phones": [
             {
@@ -64,45 +51,107 @@ GET http://localhost:8080/api/users/all
                 "contrycode": "57"
             }
         ]
-    }
-]
+    },
+    "status": "200"
+}
 ```
-### Ver un usuario
-GET http://localhost:8080/api/users?id={id}&token={token}
+</details>
 
-#### RESPONSE
+
+### Ver todos los usuarios
+POST http://localhost:8080/api/users/all
+
+<details>
+  <summary>request/response</summary>
+  
+#### Request
+```json
+{"id":"all"}
+```
+#### Response
 ```json
 {
-    "id": "2b109181-de42-4b1b-91fa-2fdaf4bdaf90",
-    "name": "Juan Rodriguez",
-    "email": "juan@dominio.cl",
-    "password": "*********",
-    "created": "2023-06-16",
-    "modified": "2023-06-16",
-    "last_login": "2023-06-16",
-    "token": "8d6f047d-fa74-46f0-9aee-48e7fd6070e3",
-    "isactive": "1",
-    "phones": [
+    "message": [
         {
-            "id": 1,
-            "number": "1234567",
-            "citycode": "1",
-            "contrycode": "57"
+            "id": "7495a248-3841-4f8d-9fd5-b96bb8ac22ce",
+            "name": "Juan Rodriguez",
+            "email": "juan@dominio.cl",
+            "password": "*********",
+            "created": "2023-06-18",
+            "modified": "2023-06-18",
+            "last_login": "2023-06-18",
+            "token": "1c318b08-dd43-4d9a-883a-06b3f6e89c07",
+            "isactive": "1",
+            "phones": [
+                {
+                    "id": 1,
+                    "number": "1234567",
+                    "citycode": "1",
+                    "contrycode": "57"
+                }
+            ]
         }
-    ]
+    ],
+    "status": "200"
+}
+```
+</details>
+
+### Ver un usuario
+POST http://localhost:8080/api/users/find/
+
+<details>
+  <summary>request/response</summary>
+  
+#### Request
+```json
+{
+    "id":"7495a248-3841-4f8d-9fd5-b96bb8ac22ce",
+    "token":"1c318b08-dd43-4d9a-883a-06b3f6e89c07"
+}
+```
+#### Response
+```json
+{
+    "message": {
+        "id": "7495a248-3841-4f8d-9fd5-b96bb8ac22ce",
+        "name": "Juan Rodriguez",
+        "email": "juan@dominio.cl",
+        "password": "*********",
+        "created": "2023-06-18",
+        "modified": "2023-06-18",
+        "last_login": "2023-06-18",
+        "token": "1c318b08-dd43-4d9a-883a-06b3f6e89c07",
+        "isactive": "1",
+        "phones": [
+            {
+                "id": 1,
+                "number": "1234567",
+                "citycode": "1",
+                "contrycode": "57"
+            }
+        ]
+    },
+    "status": "200"
 }
 ```
 
+</details>
 
-### Modificar Usurios
-PUT http://localhost:8080/api/users/
+### Modificar Usuarios
+PUT http://localhost:8080/api/users/edit
+
+<details>
+  <summary>request/response</summary>
+
 #### Request
+
 ```json
 
-{ "id":"240246ab-1cfa-4f95-a024-97bb98bc8b7a",
-  "name": "Juan Rsodriguezsss",
+{ "id":"7495a248-3841-4f8d-9fd5-b96bb8ac22ce",
+  "name": "Juan Rsodrigutezsss",
   "email": "jueeeean@dominio.cl",
-  "token": "e0657695-7292-4aee-a7bd-7725a18492f0"
+  "token": "1c318b08-dd43-4d9a-883a-06b3f6e89c07"
 }
 ```
 
@@ -110,39 +159,53 @@ PUT http://localhost:8080/api/users/
 #### Response
 ```json
 {
-   {
-    "id": "240246ab-1cfa-4f95-a024-97bb98bc8b7a",
-    "name": "Juan Rsodriguezsss",
-    "email": "jueeeean@dominio.cl",
-    "password": "*********",
-    "created": "2023-06-15",
-    "modified": "2023-06-15",
-    "last_login": "2023-06-15",
-    "token": "e0657695-7292-4aee-a7bd-7725a18492f0",
-    "isactive": "1",
-    "phones": [
-        {
-            "id": 1,
-            "number": "1234567",
-            "citycode": "1",
-            "contrycode": "57"
-        }
-    ]
-}
+    "message": {
+        "id": "7495a248-3841-4f8d-9fd5-b96bb8ac22ce",
+        "name": "Juan Rsodrigutezsss",
+        "email": "jueeeean@dominio.cl",
+        "password": "*********",
+        "created": "2023-06-18",
+        "modified": "2023-06-18",
+        "last_login": "2023-06-18",
+        "token": "1c318b08-dd43-4d9a-883a-06b3f6e89c07",
+        "isactive": "1",
+        "phones": [
+            {
+                "id": 1,
+                "number": "1234567",
+                "citycode": "1",
+                "contrycode": "57"
+            }
+        ]
+    },
+    "status": "200"
 }
 ```
+</details>
 
 
 ### Eliminar usuarios
-DELETE http://localhost:8080/api/users/delete?id={id}&token={token}
+DELETE http://localhost:8080/api/users/delete
+
+<details>
+  <summary>request/response</summary>
+
+#### Request
+```json
+{ "id":"7495a248-3841-4f8d-9fd5-b96bb8ac22ce",
+  "token": "1c318b08-dd43-4d9a-883a-06b3f6e89c07"
+}
+```
+
 #### Response
 ```json
 {
     "message": "Usuario eliminado",
-    "status": "202"
+    "status": "200"
 }
 ```
 
+</details>
 
 ## Diagrama
 ![diagrama](Diagrama.png)

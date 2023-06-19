@@ -80,7 +80,9 @@ public class UserService {
 		if(!existEmail(user.getEmail())) {
 			return Constantes.emailExistente;
 		}
+		System.out.println(user.getPassword());
 		if(!checkPasswordFormat(user.getPassword())) {
+			System.out.println("password invalida");
 			return Constantes.passwordInvalid;
 		}
 		return "0";
@@ -99,7 +101,11 @@ public class UserService {
 	 */
 	private boolean checkPasswordFormat(String password) {
 		String regex = Constantes.passwordFormat;
+		System.out.println(regex);
+		System.out.println(password);
 		boolean isEmailValid = password.matches(regex);
+		System.out.println(isEmailValid);
+
 		return isEmailValid;
 	}
 

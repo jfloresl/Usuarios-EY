@@ -9,7 +9,7 @@ public class Constantes {
 	public static String phoneInvalid="Telefono invalido";
 	public static String phoneDeleted="Telefono eliminado";
 	
-	public static String passwordFormat = "^(?=.*[a-z]){3}(?=.*[A-Z])(?=.*\\d){2}[a-zA-Z\\d]{6,}$";
+	public static String passwordFormat = "^(?=.*?\\d.*?\\d).*(?=.*[A-Z]).*(?=.*[a-z].*[a-z]).*$";
 	public static String passwordInvalid = "Password invalido";
 
 	public static String userNotFound = "Usuario no encontrado";
